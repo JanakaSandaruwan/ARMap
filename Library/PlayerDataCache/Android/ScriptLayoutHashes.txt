@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-C:/Users/hp/Documents/Unity/Stable/ARMapStable/ARMap.v0.2.apk
+C:/Users/hp/Documents/Unity/Stable/ARMap/ARMap v0.3.apk
 SceneListBegin?
 Assets/UI.unity
 Assets/ARMapAdSupported.unity

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Firebase;
 using Firebase.Auth;
+using Firebase.Database;
+using Firebase.Unity.Editor;
 
 public class Login : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class Login : MonoBehaviour
     public static string password = "";
 
     private FirebaseAuth auth;
+    private DatabaseReference reference;
     //private string createaccounturl = "";
     //private string loginurl = "";
     private string comfirmpassword = "";
@@ -37,6 +40,10 @@ public class Login : MonoBehaviour
 
         auth = FirebaseAuth.DefaultInstance;
 
+        FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://armap-41894.firebaseio.com");
+
+
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     // Update is called once per frame
@@ -62,7 +69,19 @@ public class Login : MonoBehaviour
         }
         else if (currentmenu == "ads")
         {
-            //ads
+            adGUI();
+        }
+        else if (currentmenu == "error")
+        {
+            errorGUI();
+        }
+        else if (currentmenu == "errorcreate")
+        {
+            errorcreateGUI();
+        }
+        else if (currentmenu == "errorcomfirm")
+        {
+            errorconfirmGUI();
         }
 
     }
@@ -116,6 +135,10 @@ public class Login : MonoBehaviour
                 createAccountfire(cemail, cpassword);
                 Debug.Log("Added");
             }
+            else
+            {
+                currentmenu = "errorcomfirm";
+            }
         }
 
         if (GUI.Button(new Rect(450, 340, 120, 25), "Back"))
@@ -159,6 +182,7 @@ public class Login : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                currentmenu = "errorcreate";
                 return;
             }
 
@@ -180,6 +204,7 @@ public class Login : MonoBehaviour
             if (task.IsFaulted)
             {
                 Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
+                currentmenu = "error";
                 return;
             }
 
@@ -197,6 +222,98 @@ public class Login : MonoBehaviour
         currentmenu = "Login";
     }
 
+    void adGUI()
+    {
+        GUI.Box(new Rect(0, 0, (Screen.width), (Screen.height)), "Publish Ads");
 
+
+
+        GUI.Label(new Rect(260, 150, 250, 25), "Latitude");
+        latitude = GUI.TextField(new Rect(260, 175, 250, 25), latitude);
+
+        GUI.Label(new Rect(260, 210, 250, 25), "Longitude");
+        longitude = GUI.TextField(new Rect(260, 235, 250, 25), longitude);
+
+        GUI.Label(new Rect(260, 260, 250, 25), "Image url");
+        imgurl = GUI.TextField(new Rect(260, 285, 250, 25), imgurl);
+
+        if (GUI.Button(new Rect(250, 340, 120, 25), "Publish "))
+        {
+            Ad ad = new Ad(latitude, longitude, imgurl, email);
+            string json = JsonUtility.ToJson(ad);
+            //string[] words = email.Split('@');
+            // Debug.Log(words[0]);
+            reference.Child("ads").Push().SetRawJsonValueAsync(json);
+            // Debug.Log(json);
+            currentmenu = "menu";
+
+
+        }
+
+        if (GUI.Button(new Rect(450, 340, 120, 25), "Back"))
+        {
+            currentmenu = "menu";
+        }
+    }
+
+
+    void errorGUI()
+    {
+        GUI.Box(new Rect(0, 0, (Screen.width), (Screen.height)), "Error Occur !");
+
+
+
+        GUI.Label(new Rect(260, 150, 250, 50), "Incorrect Email or password");
+
+        if (GUI.Button(new Rect(250, 340, 120, 35), "OK "))
+        {
+            currentmenu = "Login";
+        }
+    }
+
+    void errorcreateGUI()
+    {
+        GUI.Box(new Rect(0, 0, (Screen.width), (Screen.height)), "Error Occur !");
+
+
+
+        GUI.Label(new Rect(260, 150, 250, 50), "Invalid input!!!");
+
+        if (GUI.Button(new Rect(250, 340, 120, 35), "OK "))
+        {
+            currentmenu = "CreateAccount";
+        }
+    }
+
+    void errorconfirmGUI()
+    {
+        GUI.Box(new Rect(0, 0, (Screen.width), (Screen.height)), "Error Occur !");
+
+
+
+        GUI.Label(new Rect(260, 150, 250, 50), "Password and Confirm Password mismatched! ");
+
+        if (GUI.Button(new Rect(250, 340, 120, 35), "OK "))
+        {
+            currentmenu = "CreateAccount";
+        }
+    }
+
+}
+
+class Ad
+{
+    public string latitude;
+    public string longitude;
+    public string imgurl;
+    public string email;
+
+    public Ad(string latitude, string longitude, string imgurl, string email)
+    {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.imgurl = imgurl;
+        this.email = email;
+    }
 }
 
