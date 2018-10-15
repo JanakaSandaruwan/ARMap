@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "594779505695",
+    "firebase_url": "https://armap-41894.firebaseio.com",
+    "project_id": "armap-41894",
+    "storage_bucket": "armap-41894.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594779505695:android:c5c45ed1fef35194",
+        "android_client_info": {
+          "package_name": "com.uom.cse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "594779505695-nje3a92r7rlnid9q3cqsgsl4871c8otf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJQPXgyfbLYs3jXfIwG37x5dxfg_aavuM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
